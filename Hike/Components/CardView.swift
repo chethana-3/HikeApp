@@ -11,6 +11,7 @@ struct CardView: View {
     //MARK: - Properties
     @State private var imageNumber = 1
     @State private var randomNumber = 1
+    @State private var showSettingsView : Bool = false
     
     func generateRandomNumber(){
         repeat{
@@ -39,10 +40,16 @@ struct CardView: View {
                         Spacer()
                         
                         Button{
+                            showSettingsView.toggle()
                             print("Hike button was pressed")
                         }label: {
                             CustomButtonView()
                         }
+                        .sheet(isPresented: $showSettingsView, content: {
+                            SettingsView()
+                                .presentationDragIndicator(.visible)
+                                .presentationDetents([.medium, .large])
+                        })
                                                 
                     }
                     
@@ -55,11 +62,7 @@ struct CardView: View {
                 
                 //MARK: - Main content
                 ZStack{
-                    Circle()
-                        .fill(
-                            LinearGradient(colors: [.colorIndigoMedium, .colorSalmonLight], startPoint: .topLeading, endPoint: .bottomTrailing)
-                        )
-                        .frame(width: 256, height: 256)
+                    CustomCircleView()
                     
                     Image("image-\(imageNumber)")
                         .resizable()
